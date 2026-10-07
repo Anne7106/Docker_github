@@ -1,1 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: html-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: html-demo
+  template:
+    metadata:
+      labels:
+        app: html-demo
+    spec:
+      containers:
+        - name: html-demo
+          image: catherine7/html-demo:latest
+          ports:
+            - containerPort: 80
 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: html-demo-service
+spec:
+  selector:
+    app: html-demo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
