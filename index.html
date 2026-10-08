@@ -1,66 +1,126 @@
+```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Student Event Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Department Information Portal</title>
+
     <style>
         body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #1f4e79;
+            color: white;
             text-align: center;
-            font-family: Arial;
-            background-color: lightblue;
+            padding: 30px;
         }
 
-        h1 {
-            color: darkblue;
+        header h1 {
+            margin: 0;
         }
 
-        h2 {
-            color: darkgreen;
+        header p {
+            font-size: 18px;
         }
 
-        form {
-            background-color: white;
-            padding: 20px;
+        .container {
+            width: 85%;
             margin: 30px auto;
-            width: 400px;
-            border-radius: 10px;
         }
 
-        input {
-            margin: 8px;
-            padding: 8px;
-            width: 80%;
+        .card {
+            background-color: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        button {
-            padding: 10px 20px;
+        .card h2 {
+            color: #1f4e79;
+        }
+
+        ul {
+            line-height: 1.8;
+        }
+
+        footer {
+            background-color: #1f4e79;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
         }
     </style>
 </head>
 
 <body>
 
-    <h1>Student Event Registration</h1>
+    <header>
+        <h1>College Department Information Portal</h1>
+        <p>Department of Computer Science and Engineering</p>
+    </header>
 
-    <h2>Tech Fest 2026</h2>
+    <div class="container">
 
-    <p>
-        Join our annual technology event featuring technical talks,
-        competitions and innovative projects.
-    </p>
+        <div class="card">
+            <h2>Department Information</h2>
+            <p>
+                The Department of Computer Science and Engineering provides
+                quality education and practical knowledge in computer science,
+                software development, artificial intelligence, and information technology.
+            </p>
+        </div>
 
-    <form>
-        <input type="text" placeholder="Student Name"><br>
+        <div class="card">
+            <h2>Faculty</h2>
+            <ul>
+                <li>Dr. Anitha Kumar - Professor</li>
+                <li>Dr. Ravi Kumar - Associate Professor</li>
+                <li>Dr. Priya Sharma - Assistant Professor</li>
+                <li>Dr. Arun Kumar - Assistant Professor</li>
+            </ul>
+        </div>
 
-        <input type="text" placeholder="Register Number"><br>
+        <div class="card">
+            <h2>Programs Offered</h2>
+            <ul>
+                <li>B.Tech - Computer Science and Engineering</li>
+                <li>M.Tech - Computer Science and Engineering</li>
+                <li>Ph.D. - Computer Science and Engineering</li>
+            </ul>
+        </div>
 
-        <input type="text" placeholder="Department"><br>
+        <div class="card">
+            <h2>Laboratories</h2>
+            <ul>
+                <li>Programming Laboratory</li>
+                <li>Artificial Intelligence and Machine Learning Laboratory</li>
+                <li>Database Management Laboratory</li>
+                <li>Computer Networks Laboratory</li>
+                <li>Web Technology Laboratory</li>
+            </ul>
+        </div>
 
-        <input type="email" placeholder="Email"><br>
+        <div class="card">
+            <h2>Contact Information</h2>
+            <p><strong>Email:</strong> cse@college.edu</p>
+            <p><strong>Phone:</strong> +91 98765 43210</p>
+            <p><strong>Address:</strong> College Campus, India</p>
+        </div>
 
-        <input type="date"><br>
+    </div>
 
-        <button type="submit">Register</button>
-    </form>
+    <footer>
+        <p>© 2026 College Department of Computer Science and Engineering</p>
+    </footer>
 
 </body>
 </html>
+```
