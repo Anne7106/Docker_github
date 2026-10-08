@@ -1,34 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: student-event
+  name: college-portal
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: student-event
+      app: college-portal
   template:
     metadata:
       labels:
-        app: student-event
+        app: college-portal
     spec:
       containers:
-      - name: student-event
-        image: catherine7/student-event:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 80
+        - name: college-portal
+          image: catherine7/college-department-portal:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: student-event-service
+  name: college-portal-service
 spec:
   type: NodePort
   selector:
-    app: student-event
+    app: college-portal
   ports:
-  - port: 80
-    targetPort: 80
-    nodePort: 30011
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
