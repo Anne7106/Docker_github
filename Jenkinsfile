@@ -12,7 +12,7 @@ pipeline {
         stage('Clone Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Anne7106/college-department-portal.git'
+                    url: 'https://github.com/Anne7106/Docker_github.git'
             }
         }
 
