@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Personal Profile</title>
-
+    <title>Student Event Registration</title>
     <style>
         body {
             text-align: center;
@@ -17,27 +16,51 @@
         h2 {
             color: darkgreen;
         }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            margin: 30px auto;
+            width: 400px;
+            border-radius: 10px;
+        }
+
+        input {
+            margin: 8px;
+            padding: 8px;
+            width: 80%;
+        }
+
+        button {
+            padding: 10px 20px;
+        }
     </style>
 </head>
 
 <body>
 
-    <h1>Anne Catherine</h1>
+    <h1>Student Event Registration</h1>
 
-    <h2>Register Number: 24MIS0274</h2>
-
-    <h2>Department: Information Technology</h2>
-
-    <h3>Skills</h3>
-
-    <p>Python, Java, HTML, Docker, Kubernetes, Jenkins</p>
-
-    <h3>Career Objective</h3>
+    <h2>Tech Fest 2026</h2>
 
     <p>
-        To build my career in the field of software development
-        and DevOps by continuously improving my technical skills.
+        Join our annual technology event featuring technical talks,
+        competitions and innovative projects.
     </p>
+
+    <form>
+        <input type="text" placeholder="Student Name"><br>
+
+        <input type="text" placeholder="Register Number"><br>
+
+        <input type="text" placeholder="Department"><br>
+
+        <input type="email" placeholder="Email"><br>
+
+        <input type="date"><br>
+
+        <button type="submit">Register</button>
+    </form>
 
 </body>
 </html>
