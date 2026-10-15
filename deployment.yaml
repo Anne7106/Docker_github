@@ -1,31 +1,32 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: online-bookstore
+  name: college-event-portal
 spec:
   replicas: 3
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   selector:
     matchLabels:
-      app: online-bookstore
+      app: college-event-portal
   template:
     metadata:
       labels:
-        app: online-bookstore
+        app: college-event-portal
     spec:
       containers:
-        - name: online-bookstore
-          image: catherine7/online-bookstore:latest
+        - name: event-portal
+          image: catherine7/college-event-portal:latest
           ports:
             - containerPort: 80
           readinessProbe:
             httpGet:
               path: /
               port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 15
-            periodSeconds: 20 kubectl apply -f deployment.yaml
+            initialDelaySeconds: 3
+            periodSeconds: 5
