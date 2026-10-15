@@ -62,64 +62,19 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-            steps {
-                withCredentials([
-                    file(
-                        credentialsId: 'kubeconfig-credentials',
-                        variable: 'KUBECONFIG'
-                    )
-                ]) {
-                    script {
-                        bat '''
-                            @echo off
-                            kubectl get deployment %APP_NAME% >nul 2>&1
-                            if errorlevel 1 (
-                                kubectl apply -f deployment.yaml
-                                if errorlevel 1 exit /b 1
-                            )
-                        '''
-
-                        def imageTag = params.SIMULATE_FAILURE
-                            ? 'faulty-does-not-exist'
-                            : env.BUILD_NUMBER
-
-                        bat """
-                            kubectl set image deployment/${APP_NAME} ${CONTAINER_NAME}=${DOCKER_IMAGE}:${imageTag}
-                        """
-
-                        def result = bat(
-                            returnStatus: true,
-                            script: "kubectl rollout status deployment/${APP_NAME} --timeout=90s"
-                        )
-
-                        if (result != 0) {
-                            echo 'Deployment failed. Rolling back to previous revision.'
-
-                            bat """
-                                kubectl rollout undo deployment/${APP_NAME}
-                            """
-
-                            def rollbackResult = bat(
-                                returnStatus: true,
-                                script: "kubectl rollout status deployment/${APP_NAME} --timeout=120s"
-                            )
-
-                            if (rollbackResult != 0) {
-                                error('Rollback failed. Manual recovery is required.')
-                            }
-
-                            bat """
-                                kubectl get deployment ${APP_NAME}
-                                kubectl get pods -l app=${APP_NAME}
-                                kubectl rollout history deployment/${APP_NAME}
-                            """
-
-                            error('Release failed, but the previous stable release was restored.')
-                        }
-                    }
-                }
-            }
+    steps {
+        withCredentials([
+            file(
+                credentialsId: 'kubeconfig-credentials',
+                variable: 'KUBECONFIG'
+            )
+        ]) {
+            bat 'kubectl apply -f deployment.yaml'
+            bat 'kubectl apply -f service.yaml'
+            bat 'kubectl rollout status deployment/online-bookstore --timeout=120s'
         }
+    }
+}
 
         stage('Verify Deployment') {
             steps {
