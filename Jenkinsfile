@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -11,7 +10,7 @@ pipeline {
         booleanParam(
             name: 'INJECT_FAILURE',
             defaultValue: false,
-            description: 'Deploy a deliberately missing image to demonstrate automatic rollback'
+            description: 'Demonstrate failed rollout and automatic rollback'
         )
     }
 
@@ -54,10 +53,8 @@ pipeline {
                     bat '''
                         echo %DH_TOKEN% | docker login -u %DH_USER% --password-stdin
                         if errorlevel 1 exit /b 1
-
                         docker push %IMAGE_NAME%:%BUILD_NUMBER%
                         if errorlevel 1 exit /b 1
-
                         docker logout
                     '''
                 }
@@ -74,14 +71,15 @@ pipeline {
                 ]) {
                     bat 'kubectl apply -f deployment.yaml'
                     bat 'kubectl apply -f service.yaml'
-                    bat 'kubectl rollout status deployment/%APP_NAME% --timeout=120s'
 
                     script {
-                        def deployImage = "${env.IMAGE_NAME}:${env.BUILD_NUMBER}"
+                        def deployImage =
+                            "${env.IMAGE_NAME}:${env.BUILD_NUMBER}"
 
                         if (params.INJECT_FAILURE) {
-                            deployImage = "${env.IMAGE_NAME}:deliberately-missing"
-                            echo 'Demonstration mode: deploying a nonexistent image tag.'
+                            deployImage =
+                                "${env.IMAGE_NAME}:deliberately-missing"
+                            echo 'Deploying deliberately missing image for rollback test.'
                         }
 
                         bat "kubectl set image deployment/${env.APP_NAME} event-portal=${deployImage}"
@@ -90,7 +88,7 @@ pipeline {
             }
         }
 
-        stage('Verify Rollout and Roll Back if Needed') {
+        stage('Verify Rollout and Rollback') {
             steps {
                 withCredentials([
                     file(
@@ -99,22 +97,22 @@ pipeline {
                     )
                 ]) {
                     script {
-                        def rolloutResult = bat(
+                        def result = bat(
                             returnStatus: true,
                             script: 'kubectl rollout status deployment/%APP_NAME% --timeout=90s'
                         )
 
-                        if (rolloutResult != 0) {
-                            echo 'Rollout failed. Rolling back to the previous revision.'
+                        if (result != 0) {
+                            echo 'Rollout failed. Starting automatic rollback.'
 
                             bat 'kubectl rollout undo deployment/%APP_NAME%'
                             bat 'kubectl rollout status deployment/%APP_NAME% --timeout=120s'
 
-                            if (params.INJECT_FAILURE) {
-                                echo 'Faulty rollout detected and previous stable release restored.'
-                            } else {
-                                error('Deployment failed; rollback was attempted.')
+                            if (!params.INJECT_FAILURE) {
+                                error('Deployment failed. Rollback completed; inspect the cause.')
                             }
+
+                            echo 'Rollback succeeded. Previous version restored.'
                         }
 
                         bat 'kubectl get deployment %APP_NAME%'
@@ -125,10 +123,7 @@ pipeline {
             }
         }
 
-        stage('Verify Website') {
-            when {
-                expression { return !params.INJECT_FAILURE }
-            }
+        stage('Verify Service') {
             steps {
                 withCredentials([
                     file(
@@ -144,11 +139,11 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed. Check deployment status and website.'
+            echo 'College Event Management pipeline completed successfully.'
         }
         failure {
-            echo 'Pipeline failed. Inspect Console Output and Kubernetes rollout status.'
-        }kubectl apply -f deployment.yaml
+            echo 'Pipeline failed. Check Console Output and Kubernetes status.'
+        }
         always {
             echo 'College Event Management pipeline finished.'
         }
