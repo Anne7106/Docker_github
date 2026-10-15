@@ -254,7 +254,8 @@
         renderCart();
         renderOrders();
 
-        message.textContent = "Order placed successfully! Your order ID is " + order.id + ".";
+        message.textContent = "Order placed successfully! Your order ID is " + order.id + ". Thank you for shopping with us!";
+        message.style.color = "green";
         document.getElementById("orderIdInput").value = order.id;
     }
 
