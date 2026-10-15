@@ -1,103 +1,98 @@
-
 pipeline {
-    agent any
+agent any
 
-    options {
-        skipDefaultCheckout(true)
-        timestamps()
+environment {
+    DOCKER_IMAGE = 'catherine7/online-bookstore:v2'
+    DEPLOYMENT_NAME = 'online-bookstore'
+    SERVICE_NAME = 'online-bookstore-service'
+}
+
+options {
+    timestamps()
+}
+
+stages {
+
+    stage('Clone Code') {
+        steps {
+            git branch: 'main',
+                credentialsId: '111',
+                url: 'https://github.com/Anne7106/Docker_github.git'
+        }
     }
 
-    parameters {
-        booleanParam(
-            name: 'SIMULATE_FAILURE',
-            defaultValue: false,
-            description: 'Deploy a faulty image tag to test automatic rollback'
-        )
+    stage('Build Docker Image') {
+        steps {
+            bat 'docker build -t %DOCKER_IMAGE% .'
+        }
     }
 
-    environment {
-        DOCKER_IMAGE = 'catherine7/student-placement-portal'
-        APP_NAME = 'student-placement-portal'
-        CONTAINER_NAME = 'student-placement-portal'
+    stage('Test Docker Image') {
+        steps {
+            bat 'docker image inspect %DOCKER_IMAGE%'
+        }
     }
 
-    stages {
-        stage('Clone Code') {
-            steps {
-                checkout scm
+    stage('Push to Docker Hub') {
+        steps {
+            withCredentials([
+                usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DH_USER',
+                    passwordVariable: 'DH_TOKEN'
+                )
+            ]) {
+                bat '''
+                    echo %DH_TOKEN% | docker login -u %DH_USER% --password-stdin
+                    docker push %DOCKER_IMAGE%
+                    docker logout
+                '''
             }
         }
+    }
 
-        stage('Build Docker Image') {
-            steps {
-                bat 'docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% .'
+    stage('Deploy to Kubernetes') {
+        steps {
+            withCredentials([
+                file(
+                    credentialsId: 'kubeconfig',
+                    variable: 'KUBECONFIG'
+                )
+            ]) {
+                bat 'kubectl apply -f deployment.yaml'
+                bat 'kubectl apply -f service.yaml'
+                bat 'kubectl rollout status deployment/online-bookstore --timeout=120s'
             }
         }
+    }
 
-        stage('Test Docker Image') {
-            steps {
-                bat 'docker image inspect %DOCKER_IMAGE%:%BUILD_NUMBER%'
+    stage('Verify Deployment') {
+        steps {
+            withCredentials([
+                file(
+                    credentialsId: 'kubeconfig',
+                    variable: 'KUBECONFIG'
+                )
+            ]) {
+                bat 'kubectl get deployment online-bookstore'
+                bat 'kubectl get pods'
+                bat 'kubectl get service online-bookstore-service'
+                bat 'kubectl rollout status deployment/online-bookstore --timeout=120s'
             }
-        }
-
-        stage('Push to Docker Hub') {
-            steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'dockerhub-credentials',
-                        usernameVariable: 'DH_USER',
-                        passwordVariable: 'DH_TOKEN'
-                    )
-                ]) {
-                    bat '''
-                        @echo off
-                        echo %DH_TOKEN%| docker login -u %DH_USER% --password-stdin
-                        if errorlevel 1 exit /b 1
-                        docker push %DOCKER_IMAGE%:%BUILD_NUMBER%
-                        if errorlevel 1 exit /b 1
-                        docker logout
-                    '''
-                }
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
-    steps {
-        withCredentials([
-            file(
-                credentialsId: 'kubeconfig-credentials',
-                variable: 'KUBECONFIG'
-            )
-        ]) {
-            bat 'kubectl apply -f deployment.yaml'
-            bat 'kubectl apply -f service.yaml'
-            bat 'kubectl rollout status deployment/online-bookstore --timeout=120s'
         }
     }
 }
 
-        stage('Verify Deployment') {
-            steps {
-                withCredentials([
-                    file(
-                        credentialsId: 'kubeconfig-credentials',
-                        variable: 'KUBECONFIG'
-                    )
-                ]) {
-                    bat '''
-                        kubectl rollout status deployment/student-placement-portal --timeout=120s
-                        kubectl get deployment student-placement-portal
-                        kubectl get pods -l app=student-placement-portal
-                        kubectl get service student-placement-service
-                    '''
-                }
-            }
-        }
+post {
+    success {
+        echo 'Online Bookstore CI/CD pipeline completed successfully!'
     }
+    failure {
+        echo 'Pipeline failed. Check Console Output for details.'
+    }
+    always {
+        echo 'Online Bookstore pipeline execution finished.'
+    }
+}
 
-    post {
-        always {
-            echo 'Student Placement Portal pipeline completed.'
-        }
-    }
 }
