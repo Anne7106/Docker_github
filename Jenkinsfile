@@ -148,7 +148,7 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed. Inspect Console Output and Kubernetes rollout status.'
-        }
+        }kubectl apply -f deployment.yaml
         always {
             echo 'College Event Management pipeline finished.'
         }

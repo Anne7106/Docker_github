@@ -1,4 +1,3 @@
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,6 +21,7 @@ spec:
       containers:
         - name: event-portal
           image: catherine7/college-event-portal:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           readinessProbe:
