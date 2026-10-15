@@ -3,243 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Placement Portal</title>
-
+    <title>Online Bookstore</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f3f6fb;
-            color: #26344a;
+            background: #f4f6f9;
+            color: #222;
         }
-
         header {
-            background: #142d4e;
-            color: white;
-            padding: 25px 7%;
-        }
-
-        header h1 {
-            margin: 0 0 8px;
-        }
-
-        nav {
-            background: #214a78;
-            padding: 15px 7%;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-right: 20px;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        .hero {
-            background: #dceaff;
-            padding: 30px 7%;
-        }
-
-        main {
-            padding: 25px 7%;
-        }
-
-        .stats,
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 18px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: white;
-            padding: 22px;
-            border-radius: 10px;
-            box-shadow: 0 3px 12px #00000010;
-        }
-
-        .card h3 {
-            margin-top: 0;
-        }
-
-        .stat {
-            color: #1769aa;
-            font-size: 30px;
-            font-weight: bold;
-        }
-
-        .tag {
-            display: inline-block;
-            background: #e1f5e9;
-            color: #17663a;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 13px;
-        }
-
-        footer {
-            background: #142d4e;
+            background: #17365d;
             color: white;
             text-align: center;
-            padding: 18px;
+            padding: 22px;
         }
-
+        nav {
+            background: #244b78;
+            padding: 12px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        main { max-width: 1100px; margin: auto; padding: 20px; }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        input, select { flex: 1; min-width: 180px; }
+        button {
+            background: #176b45;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover { background: #104d31; }
+        .books {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+        .book, .panel {
+            background: white;
+            padding: 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 7px #00000015;
+        }
+        .book h3 { color: #17365d; }
+        .price { font-size: 20px; font-weight: bold; color: #176b45; }
+        .available { color: #176b45; font-weight: bold; }
+        .unavailable { color: #b42318; font-weight: bold; }
+        .panel { margin-top: 25px; }
+        .message { margin-top: 12px; font-weight: bold; }
+        footer {
+            margin-top: 30px;
+            background: #17365d;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
         @media (max-width: 600px) {
-            nav a {
-                display: inline-block;
-                margin: 5px 12px 5px 0;
-            }
-
-            header h1 {
-                font-size: 25px;
-            }
+            nav a { display: inline-block; margin: 6px; }
         }
     </style>
 </head>
-
 <body>
+<header>
+    <h1>Online Bookstore</h1>
+    <p>Discover your next favourite book!</p>
+</header>
 
-    <header>
-        <h1>University Student Placement Portal</h1>
-        <p>Connecting student talent with career opportunities</p>
-    </header>
+<nav>
+    <a href="#catalogue">Books</a>
+    <a href="#cart">Shopping Cart</a>
+    <a href="#orders">Track Orders</a>
+</nav>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#statistics">Statistics</a>
-        <a href="#students">Students</a>
-        <a href="#companies">Companies</a>
-        <a href="#drives">Recruitment Drives</a>
-    </nav>
-
-    <section class="hero" id="home">
-        <h2>Welcome to the Placement Cell</h2>
-        <p>
-            Explore placement opportunities, check eligibility and prepare
-            for your future with leading companies.
-        </p>
+<main>
+    <section id="catalogue">
+        <h2>Book Catalogue</h2>
+        <div class="controls">
+            <input id="search" type="text" placeholder="Search by title or author">
+            <select id="category">
+                <option value="All">All Categories</option>
+                <option value="Technology">Technology</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Science">Science</option>
+                <option value="Business">Business</option>
+            </select>
+            <button id="searchButton">Search</button>
+        </div>
+        <div id="bookList" class="books"></div>
+        <p id="searchMessage" class="message" aria-live="polite"></p>
     </section>
 
-    <main>
+    <section id="cart" class="panel">
+        <h2>Shopping Cart</h2>
+        <div id="cartItems">Your cart is empty.</div>
+        <p><strong>Total: ₹<span id="total">0</span></strong></p>
+        <button id="checkoutButton">Place Order</button>
+        <p id="orderMessage" class="message" aria-live="polite"></p>
+    </section>
 
-        <section id="statistics">
-            <h2>Placement Statistics</h2>
+    <section id="orders" class="panel">
+        <h2>Track Orders</h2>
+        <input id="orderIdInput" type="text" placeholder="Enter order ID">
+        <button id="trackButton">Track Order</button>
+        <div id="trackingResult" class="message" aria-live="polite"></div>
+        <h3>Recent Orders</h3>
+        <ul id="orderList"></ul>
+    </section>
+</main>
 
-            <div class="stats">
-                <div class="card">
-                    <h3>Eligible Students</h3>
-                    <div class="stat">500</div>
-                </div>
+<footer>
+    <p>Online Bookstore | Quality Books at Great Prices</p>
+</footer>
 
-                <div class="card">
-                    <h3>Students Placed</h3>
-                    <div class="stat">420</div>
-                </div>
+<script>
+    const books = [
+        { id: 1, title: "Learning Java", author: "Herbert Schildt", category: "Technology", price: 550, available: true },
+        { id: 2, title: "Python Programming", author: "Eric Matthes", category: "Technology", price: 650, available: true },
+        { id: 3, title: "The Great Gatsby", author: "F. Scott Fitzgerald", category: "Fiction", price: 300, available: true },
+        { id: 4, title: "A Brief History of Time", author: "Stephen Hawking", category: "Science", price: 450, available: true },
+        { id: 5, title: "Business Management", author: "Stephen Robbins", category: "Business", price: 700, available: false },
+        { id: 6, title: "Clean Code", author: "Robert C. Martin", category: "Technology", price: 600, available: true }
+    ];
 
-                <div class="card">
-                    <h3>Recruiting Companies</h3>
-                    <div class="stat">35</div>
-                </div>
+    let cart = [];
+    let orders = [];
+    let nextOrderId = 1001;
 
-                <div class="card">
-                    <h3>Highest Package</h3>
-                    <div class="stat">18 LPA</div>
-                </div>
-            </div>
-        </section>
+    const bookList = document.getElementById("bookList");
+    const searchInput = document.getElementById("search");
+    const categoryInput = document.getElementById("category");
 
-        <section id="students">
-            <h2>Student Profiles</h2>
+    function renderBooks() {
+        const query = searchInput.value.trim().toLowerCase();
+        const category = categoryInput.value;
 
-            <div class="cards">
-                <div class="card">
-                    <h3>Ananya Kumar</h3>
-                    <p>Department: Computer Science</p>
-                    <p>CGPA: 8.9</p>
-                    <span class="tag">Eligible for Placement</span>
-                </div>
+        const filtered = books.filter(book =>
+            (book.title.toLowerCase().includes(query) ||
+             book.author.toLowerCase().includes(query)) &&
+            (category === "All" || book.category === category)
+        );
 
-                <div class="card">
-                    <h3>Rahul Sharma</h3>
-                    <p>Department: Information Technology</p>
-                    <p>CGPA: 8.5</p>
-                    <span class="tag">Eligible for Placement</span>
-                </div>
+        bookList.innerHTML = "";
 
-                <div class="card">
-                    <h3>Priya Nair</h3>
-                    <p>Department: Electronics</p>
-                    <p>CGPA: 9.1</p>
-                    <span class="tag">Eligible for Placement</span>
-                </div>
-            </div>
-        </section>
+        filtered.forEach(book => {
+            const card = document.createElement("article");
+            card.className = "book";
 
-        <section id="companies">
-            <h2>Company Profiles</h2>
+            const title = document.createElement("h3");
+            title.textContent = book.title;
 
-            <div class="cards">
-                <div class="card">
-                    <h3>TCS</h3>
-                    <p>Role: Graduate Trainee</p>
-                    <p>Eligibility: 60% academic score</p>
-                </div>
+            const author = document.createElement("p");
+            author.textContent = "Author: " + book.author;
 
-                <div class="card">
-                    <h3>Infosys</h3>
-                    <p>Role: Systems Engineer</p>
-                    <p>Eligibility: Relevant degree and coding skills</p>
-                </div>
+            const categoryText = document.createElement("p");
+            categoryText.textContent = "Category: " + book.category;
 
-                <div class="card">
-                    <h3>Accenture</h3>
-                    <p>Role: Associate Software Engineer</p>
-                    <p>Eligibility: As specified in the recruitment notice</p>
-                </div>
-            </div>
-        </section>
+            const price = document.createElement("p");
+            price.className = "price";
+            price.textContent = "₹" + book.price;
 
-        <section id="drives">
-            <h2>Upcoming Recruitment Drives</h2>
+            const availability = document.createElement("p");
+            availability.className = book.available ? "available" : "unavailable";
+            availability.textContent = book.available ? "In Stock" : "Out of Stock";
 
-            <div class="cards">
-                <div class="card">
-                    <h3>TCS Campus Drive</h3>
-                    <p>Date: 20 November 2026</p>
-                    <p>Venue: University Auditorium</p>
-                    <span class="tag">Registration Open</span>
-                </div>
+            card.append(title, author, categoryText, price, availability);
 
-                <div class="card">
-                    <h3>Infosys Recruitment</h3>
-                    <p>Date: 25 November 2026</p>
-                    <p>Venue: Computer Lab Block</p>
-                    <span class="tag">Upcoming</span>
-                </div>
+            const button = document.createElement("button");
+            button.textContent = book.available ? "Add to Cart" : "Unavailable";
+            button.disabled = !book.available;
+            button.addEventListener("click", () => addToCart(book.id));
 
-                <div class="card">
-                    <h3>Accenture Campus Drive</h3>
-                    <p>Date: 2 December 2026</p>
-                    <p>Venue: Seminar Hall</p>
-                    <span class="tag">Upcoming</span>
-                </div>
-            </div>
-        </section>
+            card.appendChild(button);
+            bookList.appendChild(card);
+        });
 
-    </main>
+        document.getElementById("searchMessage").textContent =
+            filtered.length ? filtered.length + " book(s) found." : "No books found.";
+    }
 
-    <footer>
-        University Placement Cell | Building Successful Careers
-    </footer>
+    function addToCart(bookId) {
+        const book = books.find(item => item.id === bookId);
+        if (!book || !book.available) return;
 
+        cart.push(book);
+        renderCart();
+        document.getElementById("orderMessage").textContent =
+            book.title + " added to cart.";
+    }
+
+    function renderCart() {
+        const container = document.getElementById("cartItems");
+        container.innerHTML = "";
+
+        if (cart.length === 0) {
+            container.textContent = "Your cart is empty.";
+        } else {
+            cart.forEach((book, index) => {
+                const item = document.createElement("p");
+                item.textContent = book.title + " — ₹" + book.price + " ";
+
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "Remove";
+                removeButton.addEventListener("click", () => {
+                    cart.splice(index, 1);
+                    renderCart();
+                });
+
+                item.appendChild(removeButton);
+                container.appendChild(item);
+            });
+        }
+
+        document.getElementById("total").textContent =
+            cart.reduce((sum, book) => sum + book.price, 0);
+    }
+
+    function placeOrder() {
+        const message = document.getElementById("orderMessage");
+
+        if (cart.length === 0) {
+            message.textContent = "Please add a book before placing an order.";
+            return;
+        }
+
+        const order = {
+            id: nextOrderId++,
+            books: cart.map(book => book.title),
+            total: cart.reduce((sum, book) => sum + book.price, 0),
+            status: "Order Placed"
+        };
+
+        orders.push(order);
+        cart = [];
+        renderCart();
+        renderOrders();
+
+        message.textContent = "Order placed successfully! Your order ID is " + order.id + ".";
+        document.getElementById("orderIdInput").value = order.id;
+    }
+
+    function renderOrders() {
+        const list = document.getElementById("orderList");
+        list.innerHTML = "";
+
+        orders.forEach(order => {
+            const item = document.createElement("li");
+            item.textContent = "Order #" + order.id + " — " +
+                order.books.join(", ") + " — ₹" + order.total +
+                " — Status: " + order.status;
+            list.appendChild(item);
+        });
+    }
+
+    function trackOrder() {
+        const id = Number(document.getElementById("orderIdInput").value);
+        const order = orders.find(item => item.id === id);
+        const result = document.getElementById("trackingResult");
+
+        result.textContent = order
+            ? "Order #" + order.id + ": " + order.status
+            : "Order not found. Please enter a valid order ID.";
+    }
+
+    document.getElementById("searchButton").addEventListener("click", renderBooks);
+    searchInput.addEventListener("input", renderBooks);
+    categoryInput.addEventListener("change", renderBooks);
+    document.getElementById("checkoutButton").addEventListener("click", placeOrder);
+    document.getElementById("trackButton").addEventListener("click", trackOrder);
+
+    renderBooks();
+    renderCart();
+</script>
 </body>
 </html>
