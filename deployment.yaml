@@ -1,34 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: college-portal
+  name: student-placement-portal
 spec:
-  replicas: 3
+  replicas: 2
+  revisionHistoryLimit: 5
   selector:
     matchLabels:
-      app: college-portal
+      app: student-placement-portal
   template:
     metadata:
       labels:
-        app: college-portal
+        app: student-placement-portal
     spec:
       containers:
-        - name: college-portal
-          image: catherine7/college-department-portal:latest
+        - name: student-placement-portal
+          image: catherine7/student-placement-portal:v1
           imagePullPolicy: Always
           ports:
             - containerPort: 80
-
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: college-portal-service
+  name: student-placement-service
 spec:
   type: NodePort
   selector:
-    app: college-portal
+    app: student-placement-portal
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30080
+      nodePort: 30012
