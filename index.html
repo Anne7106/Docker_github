@@ -1,61 +1,107 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College Department Information Portal</title>
+    <title>Student Placement Portal</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            background-color: #f4f6f8;
-            color: #333;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #26344a;
         }
 
         header {
-            background-color: #1f4e79;
+            background: #142d4e;
             color: white;
-            text-align: center;
-            padding: 30px;
+            padding: 25px 7%;
         }
 
         header h1 {
-            margin: 0;
+            margin: 0 0 8px;
         }
 
-        header p {
-            font-size: 18px;
+        nav {
+            background: #214a78;
+            padding: 15px 7%;
         }
 
-        .container {
-            width: 85%;
-            margin: 30px auto;
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .hero {
+            background: #dceaff;
+            padding: 30px 7%;
+        }
+
+        main {
+            padding: 25px 7%;
+        }
+
+        .stats,
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
         }
 
         .card {
-            background-color: white;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #00000010;
         }
 
-        .card h2 {
-            color: #1f4e79;
+        .card h3 {
+            margin-top: 0;
         }
 
-        ul {
-            line-height: 1.8;
+        .stat {
+            color: #1769aa;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e1f5e9;
+            color: #17663a;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 13px;
         }
 
         footer {
-            background-color: #1f4e79;
+            background: #142d4e;
             color: white;
             text-align: center;
-            padding: 15px;
-            margin-top: 30px;
+            padding: 18px;
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                display: inline-block;
+                margin: 5px 12px 5px 0;
+            }
+
+            header h1 {
+                font-size: 25px;
+            }
         }
     </style>
 </head>
@@ -63,64 +109,137 @@
 <body>
 
     <header>
-        <h1>College Department Information Portal - Version 2</h1>
-        <p>Department of Computer Science and Engineering</p>
+        <h1>University Student Placement Portal</h1>
+        <p>Connecting student talent with career opportunities</p>
     </header>
 
-    <div class="container">
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#statistics">Statistics</a>
+        <a href="#students">Students</a>
+        <a href="#companies">Companies</a>
+        <a href="#drives">Recruitment Drives</a>
+    </nav>
 
-        <div class="card">
-            <h2>Department Information</h2>
-            <p>
-                The Department of Computer Science and Engineering provides
-                quality education and practical knowledge in computer science,
-                software development, artificial intelligence, and information technology.
-            </p>
-        </div>
+    <section class="hero" id="home">
+        <h2>Welcome to the Placement Cell</h2>
+        <p>
+            Explore placement opportunities, check eligibility and prepare
+            for your future with leading companies.
+        </p>
+    </section>
 
-        <div class="card">
-            <h2>Faculty</h2>
-            <ul>
-                <li>Dr. Anitha Kumar - Professor</li>
-                <li>Dr. Ravi Kumar - Associate Professor</li>
-                <li>Dr. Priya Sharma - Assistant Professor</li>
-                <li>Dr. Arun Kumar - Assistant Professor</li>
-            </ul>
-        </div>
+    <main>
 
-        <div class="card">
-            <h2>Programs Offered</h2>
-            <ul>
-                <li>B.Tech - Computer Science and Engineering</li>
-                <li>M.Tech - Computer Science and Engineering</li>
-                <li>Ph.D. - Computer Science and Engineering</li>
-            </ul>
-        </div>
+        <section id="statistics">
+            <h2>Placement Statistics</h2>
 
-        <div class="card">
-            <h2>Laboratories</h2>
-            <ul>
-                <li>Programming Laboratory</li>
-                <li>Artificial Intelligence and Machine Learning Laboratory</li>
-                <li>Database Management Laboratory</li>
-                <li>Computer Networks Laboratory</li>
-                <li>Web Technology Laboratory</li>
-            </ul>
-        </div>
+            <div class="stats">
+                <div class="card">
+                    <h3>Eligible Students</h3>
+                    <div class="stat">500</div>
+                </div>
 
-        <div class="card">
-            <h2>Contact Information</h2>
-            <p><strong>Email:</strong> cse@college.edu</p>
-            <p><strong>Phone:</strong> +91 98765 43210</p>
-            <p><strong>Address:</strong> College Campus, India</p>
-        </div>
+                <div class="card">
+                    <h3>Students Placed</h3>
+                    <div class="stat">420</div>
+                </div>
 
-    </div>
+                <div class="card">
+                    <h3>Recruiting Companies</h3>
+                    <div class="stat">35</div>
+                </div>
+
+                <div class="card">
+                    <h3>Highest Package</h3>
+                    <div class="stat">18 LPA</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="students">
+            <h2>Student Profiles</h2>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Ananya Kumar</h3>
+                    <p>Department: Computer Science</p>
+                    <p>CGPA: 8.9</p>
+                    <span class="tag">Eligible for Placement</span>
+                </div>
+
+                <div class="card">
+                    <h3>Rahul Sharma</h3>
+                    <p>Department: Information Technology</p>
+                    <p>CGPA: 8.5</p>
+                    <span class="tag">Eligible for Placement</span>
+                </div>
+
+                <div class="card">
+                    <h3>Priya Nair</h3>
+                    <p>Department: Electronics</p>
+                    <p>CGPA: 9.1</p>
+                    <span class="tag">Eligible for Placement</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="companies">
+            <h2>Company Profiles</h2>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>TCS</h3>
+                    <p>Role: Graduate Trainee</p>
+                    <p>Eligibility: 60% academic score</p>
+                </div>
+
+                <div class="card">
+                    <h3>Infosys</h3>
+                    <p>Role: Systems Engineer</p>
+                    <p>Eligibility: Relevant degree and coding skills</p>
+                </div>
+
+                <div class="card">
+                    <h3>Accenture</h3>
+                    <p>Role: Associate Software Engineer</p>
+                    <p>Eligibility: As specified in the recruitment notice</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="drives">
+            <h2>Upcoming Recruitment Drives</h2>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>TCS Campus Drive</h3>
+                    <p>Date: 20 November 2026</p>
+                    <p>Venue: University Auditorium</p>
+                    <span class="tag">Registration Open</span>
+                </div>
+
+                <div class="card">
+                    <h3>Infosys Recruitment</h3>
+                    <p>Date: 25 November 2026</p>
+                    <p>Venue: Computer Lab Block</p>
+                    <span class="tag">Upcoming</span>
+                </div>
+
+                <div class="card">
+                    <h3>Accenture Campus Drive</h3>
+                    <p>Date: 2 December 2026</p>
+                    <p>Venue: Seminar Hall</p>
+                    <span class="tag">Upcoming</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <footer>
-        <p>© 2026 College Department of Computer Science and Engineering</p>
+        University Placement Cell | Building Successful Careers
     </footer>
 
 </body>
 </html>
-```
